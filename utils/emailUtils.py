@@ -46,6 +46,6 @@ class EmailManager:
     async def verify_email(self, user_data: User) -> str:
         message = "This is a verification test :D"
         email_data = EmailContent(user=user_data, message=message)
-        status = await self.sendEmail(email_data)
+        status = await self.send_email(email_data)
 
         return status

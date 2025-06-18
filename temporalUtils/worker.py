@@ -4,13 +4,13 @@ import logging
 import sys
 import os
 
+sys.path.append(os.getcwd())
+
 from utils.emailUtils import EmailManager
 from temporalUtils.workflows import SendEmailWorkflow, SendVerifyEmailWorkflow
 
 from temporalio.client import Client
 from temporalio.worker import Worker
-
-sys.path.append(os.getcwd())
 
 
 # Initialize all workers, in this case we start a emailSender worker and a emailVerify worker
