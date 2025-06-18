@@ -3,17 +3,19 @@ import sys
 
 from utils.shared import User, EmailContent
 from temporalio.client import Client
-from temporalUtils.workflows import sendEmailWorkflow, sendVerifyEmailWorkflow
+from temporalUtils.workflows import SendEmailWorkflow, SendVerifyEmailWorkflow
+
 
 async def main():
-    
     # Create client connected to server at the given address
     client = await Client.connect("localhost:7233", namespace="default")
 
     # Execute email sender workflow
     handle = await client.start_workflow(
-        sendEmailWorkflow.sendEmail,
-        EmailContent(user=User(name=sys.argv[1], email=sys.argv[2]), message=sys.argv[3]),
+        SendEmailWorkflow.send_email,
+        EmailContent(
+            user=User(name=sys.argv[1], email=sys.argv[2]), message=sys.argv[3]
+        ),
         id="email-send-tasks-example",
         task_queue="emails-tasks-send",
     )
@@ -23,7 +25,7 @@ async def main():
 
     # Execute verifier workflow
     handle = await client.start_workflow(
-        sendVerifyEmailWorkflow.sendVerifyEmail,
+        SendVerifyEmailWorkflow.send_verify_email,
         User(name=sys.argv[1], email=sys.argv[2]),
         id="verify-tasks-example",
         task_queue="emails-tasks-verify",
@@ -31,6 +33,7 @@ async def main():
 
     result = await handle.result()
     print(f"Result for verifier: {result}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
