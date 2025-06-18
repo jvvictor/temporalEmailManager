@@ -10,7 +10,7 @@ async def main():
     # Create client connected to server at the given address
     client = await Client.connect("localhost:7233", namespace="default")
 
-    # Execute a workflow
+    # Execute email sender workflow
     handle = await client.start_workflow(
         sendEmailWorkflow.sendEmail,
         EmailContent(user=User(name=sys.argv[1], email=sys.argv[2]), message=sys.argv[3]),
@@ -21,7 +21,7 @@ async def main():
     result = await handle.result()
     print(f"Result for sender: {result}")
 
-    # Execute a workflow
+    # Execute verifier workflow
     handle = await client.start_workflow(
         sendVerifyEmailWorkflow.sendVerifyEmail,
         User(name=sys.argv[1], email=sys.argv[2]),

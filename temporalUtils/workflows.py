@@ -14,6 +14,7 @@ with workflow.unsafe.imports_passed_through():
         User, EmailContent
     )
 
+# Email sender worflow, receives a EmailContent type and send a email using the .env email
 @workflow.defn
 class sendEmailWorkflow:
 
@@ -31,7 +32,8 @@ class sendEmailWorkflow:
         workflow.logger.info(f"EmailSender responded with {emailResponse}")
 
         return emailResponse
-    
+
+# Email verifier worflow, sends a dummy email to recieved User to simulate a confirmation email, using the .env email
 @workflow.defn
 class sendVerifyEmailWorkflow:
 
